@@ -29,7 +29,11 @@ type Bitcoind struct {
 func NewFromURL(url *url.URL, useSSL bool, opts ...Option) (*Bitcoind, error) {
 	port, err := strconv.Atoi(url.Port())
 	if err != nil {
-		return nil, err
+		if url.Scheme == "https" {
+			port = 443
+		} else {
+			port = 80
+		}
 	}
 
 	password, _ := url.User.Password()
@@ -38,7 +42,7 @@ func NewFromURL(url *url.URL, useSSL bool, opts ...Option) (*Bitcoind, error) {
 }
 
 // New return a new bitcoind
-func New(host string, port int, path string, user string, passwd string, useSSL bool, opts ...Option) (*Bitcoind, error) {
+func New(host string, port int, path, user, passwd string, useSSL bool, opts ...Option) (*Bitcoind, error) {
 	ips, err := net.LookupIP(host)
 	if err != nil || len(ips) == 0 {
 		return nil, fmt.Errorf("Could not resolve %q: %v", host, err)

@@ -27,7 +27,6 @@ var (
 // A rpcClient represents a JSON RPC client (over HTTP(s)).
 type rpcClient struct {
 	serverAddr       string
-	path             string
 	user             string
 	passwd           string
 	httpClient       *http.Client
@@ -96,8 +95,7 @@ func newClient(host string, port int, user, path, passwd string, useSSL bool, op
 		httpClient = &http.Client{}
 	}
 	c = &rpcClient{
-		serverAddr:       fmt.Sprintf("%s%s:%d", serverAddr, host, port),
-		path:             path,
+		serverAddr:       fmt.Sprintf("%s%s:%d%s", serverAddr, host, port, path),
 		user:             user,
 		passwd:           passwd,
 		httpClient:       httpClient,
@@ -151,7 +149,7 @@ func (c *rpcClient) call(method string, params interface{}) (rpcResponse, error)
 		return rpcResponse{}, fmt.Errorf("failed to encode rpc request: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", c.serverAddr+c.path, payloadBuffer)
+	req, err := http.NewRequest("POST", c.serverAddr, payloadBuffer)
 	if err != nil {
 		return rpcResponse{}, fmt.Errorf("failed to create new http request: %w", err)
 	}
@@ -222,7 +220,7 @@ func (c *rpcClient) read(method string, params interface{}) (io.ReadCloser, erro
 		return nil, fmt.Errorf("failed to encode rpc request: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", c.serverAddr+c.path, payloadBuffer)
+	req, err := http.NewRequest("POST", c.serverAddr, payloadBuffer)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new http request: %w", err)
 	}
