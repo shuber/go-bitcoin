@@ -26,19 +26,19 @@ type Bitcoind struct {
 	IPAddress string
 }
 
-func NewFromURL(url *url.URL, useSSL bool, opts ...Option) (*Bitcoind, error) {
-	port, err := strconv.Atoi(url.Port())
+func NewFromURL(rpcUrl *url.URL, useSSL bool, opts ...Option) (*Bitcoind, error) {
+	port, err := strconv.Atoi(rpcUrl.Port())
 	if err != nil {
-		if url.Scheme == "https" {
+		if rpcUrl.Scheme == "https" {
 			port = 443
 		} else {
 			port = 80
 		}
 	}
 
-	password, _ := url.User.Password()
+	password, _ := rpcUrl.User.Password()
 
-	return New(url.Hostname(), port, url.Path, url.User.Username(), password, useSSL, opts...)
+	return New(rpcUrl.Hostname(), port, rpcUrl.Path, rpcUrl.User.Username(), password, useSSL, opts...)
 }
 
 // New return a new bitcoind
