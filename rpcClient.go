@@ -32,6 +32,7 @@ type rpcClient struct {
 	httpClient       *http.Client
 	logger           Logger
 	rpcClientTimeout time.Duration
+	Path             string
 }
 
 // rpcRequest represent a RCP request
@@ -101,6 +102,7 @@ func newClient(host string, port int, user, passwd string, useSSL bool, opts ...
 		httpClient:       httpClient,
 		logger:           &DefaultLogger{},
 		rpcClientTimeout: rpcClientTimeoutSecondsDefault * time.Second,
+		Path:             "/",
 	}
 
 	// apply options to client
@@ -149,7 +151,7 @@ func (c *rpcClient) call(method string, params interface{}) (rpcResponse, error)
 		return rpcResponse{}, fmt.Errorf("failed to encode rpc request: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", c.serverAddr, payloadBuffer)
+	req, err := http.NewRequest("POST", c.serverAddr+c.Path, payloadBuffer)
 	if err != nil {
 		return rpcResponse{}, fmt.Errorf("failed to create new http request: %w", err)
 	}
