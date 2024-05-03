@@ -11,6 +11,7 @@ import (
 	"net/http/httptrace"
 	"net/http/httputil"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -94,6 +95,12 @@ func newClient(host string, port int, user, path, passwd string, useSSL bool, op
 		serverAddr = "http://"
 		httpClient = &http.Client{}
 	}
+	if path != "" && strings.HasSuffix(path, "/") {
+		path = strings.TrimRight(path, "/") // remove / suffix
+	}
+	if path != "" && !strings.HasPrefix(path, "/") {
+		path = "/" + path // add / prefix unless root
+	}
 	c = &rpcClient{
 		serverAddr:       fmt.Sprintf("%s%s:%d%s", serverAddr, host, port, path),
 		user:             user,
@@ -107,6 +114,8 @@ func newClient(host string, port int, user, path, passwd string, useSSL bool, op
 	for _, opt := range opts {
 		opt(c)
 	}
+
+	fmt.Println("Configuring RPC calls to:", c.serverAddr)
 
 	return
 }
