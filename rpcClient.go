@@ -222,7 +222,7 @@ func (c *rpcClient) read(method string, params interface{}) (io.ReadCloser, erro
 		return nil, fmt.Errorf("failed to encode rpc request: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", c.serverAddr, payloadBuffer)
+	req, err := http.NewRequest("POST", c.serverAddr+c.path, payloadBuffer)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new http request: %w", err)
 	}
