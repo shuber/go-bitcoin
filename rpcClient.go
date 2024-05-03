@@ -27,12 +27,12 @@ var (
 // A rpcClient represents a JSON RPC client (over HTTP(s)).
 type rpcClient struct {
 	serverAddr       string
+	path             string
 	user             string
 	passwd           string
 	httpClient       *http.Client
 	logger           Logger
 	rpcClientTimeout time.Duration
-	Path             string
 }
 
 // rpcRequest represent a RCP request
@@ -78,7 +78,7 @@ func WithOptionalLogger(l Logger) func(*rpcClient) {
 
 type Option func(f *rpcClient)
 
-func newClient(host string, port int, user, passwd string, useSSL bool, opts ...Option) (c *rpcClient, err error) {
+func newClient(host string, port int, user, path, passwd string, useSSL bool, opts ...Option) (c *rpcClient, err error) {
 	if len(host) == 0 {
 		err = errors.New("Bad call missing argument host")
 		return
@@ -97,12 +97,12 @@ func newClient(host string, port int, user, passwd string, useSSL bool, opts ...
 	}
 	c = &rpcClient{
 		serverAddr:       fmt.Sprintf("%s%s:%d", serverAddr, host, port),
+		path:             path,
 		user:             user,
 		passwd:           passwd,
 		httpClient:       httpClient,
 		logger:           &DefaultLogger{},
 		rpcClientTimeout: rpcClientTimeoutSecondsDefault * time.Second,
-		Path:             "/",
 	}
 
 	// apply options to client
@@ -151,7 +151,7 @@ func (c *rpcClient) call(method string, params interface{}) (rpcResponse, error)
 		return rpcResponse{}, fmt.Errorf("failed to encode rpc request: %w", err)
 	}
 
-	req, err := http.NewRequest("POST", c.serverAddr+c.Path, payloadBuffer)
+	req, err := http.NewRequest("POST", c.serverAddr+c.path, payloadBuffer)
 	if err != nil {
 		return rpcResponse{}, fmt.Errorf("failed to create new http request: %w", err)
 	}

@@ -34,11 +34,11 @@ func NewFromURL(url *url.URL, useSSL bool, opts ...Option) (*Bitcoind, error) {
 
 	password, _ := url.User.Password()
 
-	return New(url.Hostname(), port, url.User.Username(), password, useSSL, opts...)
+	return New(url.Hostname(), port, url.Path, url.User.Username(), password, useSSL, opts...)
 }
 
 // New return a new bitcoind
-func New(host string, port int, user, passwd string, useSSL bool, opts ...Option) (*Bitcoind, error) {
+func New(host string, port int, path string, user string, passwd string, useSSL bool, opts ...Option) (*Bitcoind, error) {
 	ips, err := net.LookupIP(host)
 	if err != nil || len(ips) == 0 {
 		return nil, fmt.Errorf("Could not resolve %q: %v", host, err)
@@ -53,7 +53,7 @@ func New(host string, port int, user, passwd string, useSSL bool, opts ...Option
 		}
 	}
 
-	rpcClient, err := newClient(host, port, user, passwd, useSSL, opts...)
+	rpcClient, err := newClient(host, port, path, user, passwd, useSSL, opts...)
 	if err != nil {
 		return nil, err
 	}
