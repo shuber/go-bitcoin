@@ -53,7 +53,7 @@ func New(host string, port int, user, passwd string, useSSL bool, opts ...Option
 		}
 	}
 
-	rpcClient, err := newClient(ip, port, user, passwd, useSSL, opts...)
+	rpcClient, err := newClient(host, port, user, passwd, useSSL, opts...)
 	if err != nil {
 		return nil, err
 	}
