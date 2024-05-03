@@ -78,7 +78,7 @@ func WithOptionalLogger(l Logger) func(*rpcClient) {
 
 type Option func(f *rpcClient)
 
-func newClient(host string, port int, user, path, passwd string, useSSL bool, opts ...Option) (c *rpcClient, err error) {
+func newClient(host string, port int, path, user, passwd string, useSSL bool, opts ...Option) (c *rpcClient, err error) {
 	if len(host) == 0 {
 		err = errors.New("Bad call missing argument host")
 		return
@@ -114,8 +114,6 @@ func newClient(host string, port int, user, path, passwd string, useSSL bool, op
 	for _, opt := range opts {
 		opt(c)
 	}
-
-	fmt.Println("Configuring RPC calls to:", c.serverAddr)
 
 	return
 }

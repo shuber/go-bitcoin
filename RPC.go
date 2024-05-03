@@ -27,9 +27,6 @@ type Bitcoind struct {
 }
 
 func NewFromURL(rpcUrl *url.URL, useSSL bool, opts ...Option) (*Bitcoind, error) {
-	fmt.Println("rpcUrl: %+v", rpcUrl)
-	fmt.Println("rpcUrl.Path: %+v", rpcUrl.Path)
-
 	port, err := strconv.Atoi(rpcUrl.Port())
 	if err != nil {
 		if rpcUrl.Scheme == "https" {
