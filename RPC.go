@@ -1086,3 +1086,36 @@ func (b *Bitcoind) SetAccount(address, account string) error {
 	_, err := b.call("setaccount", []interface{}{address, account})
 	return err
 }
+
+// GetInfo returns the number of connections to other nodes.
+func (b *Bitcoind) BbGetBlock(hash_or_number string, page uint64) (block *BbBlock, err error) {
+	config := make(map[string]interface{})
+	config["page"] = page
+
+	r, err := b.call("bb_getblock", []interface{}{hash_or_number, config})
+	if err != nil {
+		return
+	}
+
+	if r.Err != nil {
+		rr := r.Err.(map[string]interface{})
+		err = fmt.Errorf("ERROR %s: %s", rr["code"], rr["message"])
+		return
+	}
+
+	err = json.Unmarshal(r.Result, &block)
+	if err != nil {
+		return
+	}
+
+	if page < block.TotalPages {
+		txs := make([]BbBlockTransaction, 0)
+		block, err = b.BbGetBlock(hash_or_number, page+1)
+		if err != nil {
+			return
+		}
+		block.Txs = append(txs, block.Txs...)
+	}
+
+	return
+}

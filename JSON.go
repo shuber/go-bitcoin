@@ -311,6 +311,48 @@ type submitMiningSolutionParams struct {
 	Version  uint32 `json:"version"`
 }
 
+// BbBlock struct
+type BbBlock struct {
+	Bits              string               `json:"bits"`
+	Confirmations     int64                `json:"confirmations"`
+	Difficulty        float64              `json:"difficulty"`
+	Hash              string               `json:"hash"`
+	Height            uint64               `json:"height"`
+	ItemsOnPage       uint64               `json:"itemsOnPage"`
+	MerkleRoot        string               `json:"merkleroot"`
+	NextBlockHash     string               `json:"nextblockhash"`
+	Nonce             uint64               `json:"nonce"`
+	Page              uint64               `json:"page"`
+	PreviousBlockHash string               `json:"previousblockhash"`
+	Size              uint64               `json:"size"`
+	Time              uint64               `json:"time"`
+	TotalPages        uint64               `json:"totalPages"`
+	TxCount           uint64               `json:"txcount"`
+	Txs               []BbBlockTransaction `json:"txs"`
+	Version           int64                `json:"version"`
+}
+
+type BbBlockTransaction struct {
+	BlockHash     string                    `json:"blockHash"`
+	BlockTime     uint64                    `json:"blockTime"`
+	Confirmations int64                     `json:"confirmations"`
+	Fees          uint64                    `json:"fees"`
+	Height        uint64                    `json:"blockHeight"`
+	Txid          string                    `json:"txid"`
+	Value         uint64                    `json:"value"`
+	ValueIn       uint64                    `json:"valueIn"`
+	Vin           []BbBlockTransactionInOut `json:"vin"`
+	Vout          []BbBlockTransactionInOut `json:"vout"`
+}
+
+type BbBlockTransactionInOut struct {
+	Addresses []string `json:"addresses"`
+	Index     uint64   `json:"n"`
+	IsAddress bool     `json:"isAddress"`
+	Spent     bool     `json:"spent"`
+	Value     uint64   `json:"value"`
+}
+
 // Block struct
 type Block struct {
 	Hash              string   `json:"hash"`
