@@ -315,13 +315,13 @@ type submitMiningSolutionParams struct {
 type BbBlock struct {
 	Bits              string               `json:"bits"`
 	Confirmations     int64                `json:"confirmations"`
-	Difficulty        float64              `json:"difficulty"`
+	Difficulty        string               `json:"difficulty"`
 	Hash              string               `json:"hash"`
 	Height            uint64               `json:"height"`
 	ItemsOnPage       uint64               `json:"itemsOnPage"`
 	MerkleRoot        string               `json:"merkleroot"`
 	NextBlockHash     string               `json:"nextblockhash"`
-	Nonce             uint64               `json:"nonce"`
+	Nonce             string               `json:"nonce"`
 	Page              uint64               `json:"page"`
 	PreviousBlockHash string               `json:"previousblockhash"`
 	Size              uint64               `json:"size"`
@@ -334,13 +334,14 @@ type BbBlock struct {
 
 type BbBlockTransaction struct {
 	BlockHash     string                    `json:"blockHash"`
+	BlockHeight   uint64                    `json:"blockHeight"`
 	BlockTime     uint64                    `json:"blockTime"`
 	Confirmations int64                     `json:"confirmations"`
-	Fees          uint64                    `json:"fees"`
+	Fees          string                    `json:"fees"`
 	Height        uint64                    `json:"blockHeight"`
 	Txid          string                    `json:"txid"`
-	Value         uint64                    `json:"value"`
-	ValueIn       uint64                    `json:"valueIn"`
+	Value         string                    `json:"value"`
+	ValueIn       string                    `json:"valueIn"`
 	Vin           []BbBlockTransactionInOut `json:"vin"`
 	Vout          []BbBlockTransactionInOut `json:"vout"`
 }
