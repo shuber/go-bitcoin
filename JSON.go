@@ -351,7 +351,7 @@ type BbBlockTransactionInOut struct {
 	Index     uint64   `json:"n"`
 	IsAddress bool     `json:"isAddress"`
 	Spent     bool     `json:"spent"`
-	Value     uint64   `json:"value"`
+	Value     string   `json:"value"`
 }
 
 // Block struct
