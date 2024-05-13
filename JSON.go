@@ -314,7 +314,7 @@ type submitMiningSolutionParams struct {
 // BbBlock struct
 type BbBlock struct {
 	Bits              string               `json:"bits"`
-	Confirmations     int64                `json:"confirmations"`
+	Confirmations     uint64               `json:"confirmations"`
 	Difficulty        string               `json:"difficulty"`
 	Hash              string               `json:"hash"`
 	Height            uint64               `json:"height"`
@@ -329,14 +329,14 @@ type BbBlock struct {
 	TotalPages        uint64               `json:"totalPages"`
 	TxCount           uint64               `json:"txcount"`
 	Txs               []BbBlockTransaction `json:"txs"`
-	Version           int64                `json:"version"`
+	Version           uint64               `json:"version"`
 }
 
 type BbBlockTransaction struct {
 	BlockHash     string                    `json:"blockHash"`
 	BlockHeight   uint64                    `json:"blockHeight"`
 	BlockTime     uint64                    `json:"blockTime"`
-	Confirmations int64                     `json:"confirmations"`
+	Confirmations uint64                    `json:"confirmations"`
 	Fees          string                    `json:"fees"`
 	Height        uint64                    `json:"blockHeight"`
 	Txid          string                    `json:"txid"`
