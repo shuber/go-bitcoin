@@ -1109,7 +1109,7 @@ func (b *Bitcoind) BbGetBlock(hash_or_number string, page uint64) (block *BbBloc
 	}
 
 	if page < block.TotalPages {
-		txs := make([]BbBlockTransaction, 0)
+		txs := append(make([]BbBlockTransaction, 0), block.Txs...)
 		block, err = b.BbGetBlock(hash_or_number, page+1)
 		if err != nil {
 			return
